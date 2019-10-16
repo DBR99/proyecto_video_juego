@@ -6,8 +6,8 @@ PImage balon;
 PImage payaso;
 int[][] cuadricula = new int[filas][columnas];
 
-int payasoCx = 10;
-int payasoCy = 10;
+int payasoCx = 1;
+int payasoCy = 1;
 
 
 void setup() {
@@ -60,9 +60,9 @@ void draw() {
       }
     }
   }
-  float payasoPx = payasoCx * (anchoCelda);
-  float payasoPy = payasoCy * (altoCelda);
-  image(payaso, payasoPx, payasoPy);
+  //float payasoPx = payasoCx * (anchoCelda);
+  //float payasoPy = payasoCy * (altoCelda);
+  image(payaso, payasoCx, payasoCy);
   if (keyPressed) { 
     if (key == 'd') {
     //  if (payasoCx < columnas-1 && cuadricula[payasoCy][payasoCx+1] != 0){
