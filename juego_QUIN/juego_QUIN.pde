@@ -1,4 +1,8 @@
-int filas = 12; //<>//
+import processing.serial.*; //<>//
+Serial myPort;
+int val;
+
+int filas = 12;
 int columnas = 12;
 PImage globo;
 PImage muro;
@@ -10,8 +14,8 @@ int escenario=1;
 int[][] cuadricula = new int[filas][columnas];
 
 
-int payasoCx = 1;
-int payasoCy = 1;
+int payasoCx = 100;
+int payasoCy = 200;
 
 
 
@@ -37,6 +41,9 @@ int estadoPayaso;
 
 
 void setup() {
+  String portName = Serial.list()[0];
+myPort = new Serial(this, portName, 9600);
+
   size(displayWidth, 700);
  
   globo = loadImage("globoAzul.png");
@@ -67,6 +74,12 @@ void setup() {
     }
   }
 }
+////////////////////////////////////  <-- Conexion arduino
+void serialEvent(Serial myPort){
+val=myPort.read()-48;;
+myPort.clear();
+}
+////////////////////////////////////
 
 
 void draw() {
@@ -77,8 +90,8 @@ void draw() {
    background(fondoFuera);
   }
 
-  float anchoCelda = width/columnas;
-  float altoCelda = height/filas;
+  //float anchoCelda = width/columnas;
+  //float altoCelda = height/filas;
 
 
   //for (int fila = 0; fila < filas; fila++) {
@@ -102,14 +115,14 @@ void draw() {
   //float payasoPx = payasoCx * (anchoCelda);
   //float payasoPy = payasoCy * (altoCelda);
   //image(payaso, payasoCx, payasoCy);
-  if (keyPressed) { 
-    if (key == 'd') {
+  
+    if (val == 2) {
       //  if (payasoCx < columnas-1 && cuadricula[payasoCy][payasoCx+1] != 0){
 
       move_the_sprite();
       payasoCx += 20;
       println(payasoCx," ",payasoCy);
-      if(payasoCx >= 1300 && payasoCy >= 301 ){
+      if(payasoCx >= 1300){
       escenario =2;  
       payasoCx = 20;
       payasoCy = 301;
@@ -120,22 +133,22 @@ void draw() {
       
     }
 
-    if (key == 'a') {
+    if (val == 3) {
       //if(payasoCx > 0 && cuadricula[payasoCy][payasoCx+1] != 0){
       //  payasoCx -= 3;
       move_the_sprite();
-      payasoCx -= 10; 
+      payasoCx -= 20; 
 
       //}
     }
-    if (key == 'w') {
+    if (val == 4) {
       //if(payasoCy >0 && cuadricula[payasoCy-1][payasoCx] != 0){
       payasoCy -= 20 ;
       move_the_sprite();
 
       //}
     }
-    if (key == 's') {
+    if (val == 5) {
       //if(payasoCy < filas-1 && cuadricula[payasoCy+1][payasoCx]!=0){
 
       payasoCy += 20;
@@ -145,7 +158,7 @@ void draw() {
       // }
     }
   }
-}
+
 
 
 //se llena el arreglo
