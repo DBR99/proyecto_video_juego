@@ -1,4 +1,4 @@
-char state = Serial.read ( );
+char val;
 
 int led = 13;
 //A
@@ -63,12 +63,22 @@ void loop() {
     //analogWrite(motor, 0);
     // digitalWrite(led, LOW);
   }
-  if (Serial.available ( ) > 0) {   // Checking if the Processing IDE has send a value or not
-    if (state == '1')            // If received data is '1', then turn on LED
-    {
-      analogWrite(motor, 0);
-      digitalWrite(led, LOW);
+  if (Serial.available ( )) {   // Checking if the Processing IDE has send a value or not
+    val = Serial.read();
+  }
 
-    }
+   if (val == '2') {
+    analogWrite(motor, 200);
+    delay(200);
+  } else {
+    analogWrite(motor, 0);
+  }
+  //----------------------
+
+  if (val == '1') {
+    digitalWrite(led, HIGH);
+        
+  } else {
+    digitalWrite(led, LOW);
   }
 }

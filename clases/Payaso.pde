@@ -4,7 +4,7 @@ class Payaso {
   float y;
   float puntos;
   int vida;
-  int estadoEscenario;
+  //int estadoEscenario;
 
   // sprite --->
   PImage spriteSheetPayaso;
@@ -24,9 +24,9 @@ class Payaso {
     imagenActual = 0;
     puntos =5;
     vida = 3;
-    estadoEscenario = 2;
-    x=200;
-    y=200;
+    // estadoEscenario = 2;
+    x=250;
+    y=250;
     setupSpritesPayaso();
   }
 
@@ -70,6 +70,14 @@ class Payaso {
   }
 
 
+  void setDecrementoPosPayasoX (float decremento) {
+    x -= decremento;
+  }
+
+  void setDecrementoPosPayasoY (float decremento) {
+    y -= decremento;
+  }
+
 
 
   void drawPayaso() {
@@ -82,7 +90,7 @@ class Payaso {
   }
 
   void drawPayasoQuemado(float posX, float posY) {
-    payasoQuemado = spriteSheetPayaso.get(78 * 6, 200, 78, 102);
+    payasoQuemado = spriteSheetPayaso.get(78 * 6, 200, 77, 102);
     image(payasoQuemado, posX, posY);
   }
 
@@ -91,7 +99,7 @@ class Payaso {
 
 
 
-  void actualizarPosicionPayaso(int xCambio, int yCambio) {
+  void actualizarDireccionPayaso(int xCambio, int yCambio) {
     imagenActual = (imagenActual + 0.2) % 5;
     enMovimiento = true;
 
@@ -113,50 +121,90 @@ class Payaso {
 
     x = x + xCambio;
     y = y + yCambio;
-
-
-    ////////////////////////////////////////////////////////////////////REVISAR
-    // println(get(int(x), int(y)));
-    // println(x, "Payaso ", y);
     validarLimites(xCambio, yCambio);
-    if (x == 368 && y == 403) {
-      y = 54;
-    }
   }
 
   void validarLimites(int xCambio, int yCambio) {
-    if (getEstadoEscenario()==2) {
-      if (payasoEnLimiteEscenario2(x, y)) {
-        x = x - xCambio;
-        y = y - yCambio;
-      }
-    } else   if (getEstadoEscenario()==3) {
-      if (payasoEnLimiteEscenario3(x, y)) {
-        x = x - xCambio;
-        y = y - yCambio;
-      }
+     if (estadoEscenario==2) {
+    if (validarLimitesEscenario2()==false) {
+      x = x - xCambio;
+      y = y - yCambio;
+        }
+    }
+     if (estadoEscenario==3) {
+    if (validarLimitesEscenario3()==false) {
+      x = x - xCambio;
+      y = y - yCambio;
+        }
+    }
+         if (estadoEscenario==4) {
+    if (validarLimitesEscenario4()==false) {
+      x = x - xCambio;
+      y = y - yCambio;
+        }
     }
   }
 
-
-
-
-  boolean payasoEnLimiteEscenario2(float x, float y) {
-
-    if (x <= 67 || y <= -37 || x >= 627 || y >= 404) {
+  boolean validarLimitesEscenario2() {
+    if ((x>=100 && x+51<=665 && y+70>=180 && y+91<= 400)||(y+62>=62 && y <=511 && x>130 && x+51<=530) || (x>=156 && x+51<=534 && y+70>=129 && y+91<=461)||(y<=479 && y+70>=63 
+    && x>=235 && x+51<=623)) {
       return true;
-    } else if (x == 368 && y == 403) {
-      estadoEscenario = 3;
+    } else {
+      return false;
     }
-    return false;
   }
-  boolean payasoEnLimiteEscenario3(float x, float y) {
-
-    if (x <= 0 || y <= -37 || x >= width-53 || y >= height-80) {
+   boolean validarLimitesEscenario3() {
+    if ((x>=0 && x+60<=width && y+70>=0 && y+91<=height)) {
       return true;
+    } else {
+      return false;
     }
-    return false;
   }
+     boolean validarLimitesEscenario4() {
+    if ((x>=0 && x+60<=width && y+70>=0 && y+91<=height)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+
+
+
+  //-----------------------------------------------------VALIDACIONES DE ESCENARIOS
+  boolean validarPasarEscenario3() {
+    if (x + 51 >=376 && x + 51  <= 449 && y + 90 >=491 && y + 90<=517) {
+      return true;
+    } else {
+      return false;
+    }
+  } 
+
+  boolean validarPasarEscenario4() {
+    if (x + 51 >=240 && x + 51  <= 589 && y + 90 >=553 && y + 85<=605) {
+      return true;
+    } else {
+      return false;
+    }
+  } 
+
+  boolean validarVolverEscenario3() {
+    if (x + 51 >=294 && x + 51  <= 487 && y >=-5 && y + 85<=80) {
+      return true;
+    } else {
+      return false;
+    }
+  } 
+  boolean validarVolverEscenario2() {
+    if (x + 51 >=301 && x + 51  <= 489 && y >=-5 && y + 86<=140) {
+      return true;
+    } else {
+      return false;
+    }
+  } 
+  //-------------------------------------------------------------
+
+  //-------------------------------------------------------VALIDACIONES PUNTOS Y VIDAS
 
   void setPuntos(float incremento) {
     puntos += incremento;
@@ -165,11 +213,29 @@ class Payaso {
   void setVida(float decremento) {
     vida -= decremento;
   }
-  boolean validarVida() {
-    if (vida >= 0) {
+
+  float getPuntos() {
+    return puntos;
+  }
+
+  int getVida() {
+    return vida;
+  }
+
+  boolean validarGanar() {
+    if (puntos >= 17 && x+51 >= 303 && x+51 <= 502 && y+91 >=200 && y+91<= 370 ) {
       return true;
     }
     return false;
+  }
+
+
+  boolean validarVida() {
+    if (vida > 1) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
 
@@ -183,8 +249,7 @@ class Payaso {
     fill(0, 102, 153);
     text(vida, 610, 44);
   }
+  //--------------------------------------------------------------------
 
-  int getEstadoEscenario() {
-    return estadoEscenario;
-  }
+ 
 }

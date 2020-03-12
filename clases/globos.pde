@@ -1,13 +1,10 @@
 class Globos {
-  PVector pos;
-  PVector posRA;
-  PVector speed;
+  PVector pos, posRA, speed;
   PImage spriteSheetGlobos;
-  float globoActual;
   PImage [][] movimiento;
   float imagenGlobo;
 
-  Bombas bomba[];
+
 
 
   // globo rojo  (0,0,47,80);
@@ -15,9 +12,8 @@ class Globos {
 
   Globos() {
     pos= new PVector (random(10, 700), random(300, 500));
-    posRA= new PVector (random(10, 700), random(100, 200));
+    posRA= new PVector (random(10, 700), random(140, 400));
     speed = new PVector();
-    globoActual = 0;
     setupSpritesGlobos();
   }
 
@@ -33,9 +29,16 @@ class Globos {
 
 
   void drawGloboRojo(float posPayasoX, float posPayasoY) {
-    moverGlobo(posPayasoX, posPayasoY, 0.0001);
+    moverGlobo(posPayasoX, posPayasoY, 0.005);
     for (int i = 0; i < 5; i++) {
       image(movimiento[0][1 + int(imagenGlobo)], posRA.x, posRA.y);
+    }
+  }
+
+  void drawGloboAzul(float posPayasoX, float posPayasoY) {
+    moverGlobo(posPayasoX, posPayasoY, 0.005);
+    for (int i = 0; i < 5; i++) {
+      image(movimiento[2][1 + int(imagenGlobo)], posRA.x, posRA.y);
     }
   }
 
@@ -45,12 +48,7 @@ class Globos {
       image(movimiento[1][1 + int(imagenGlobo)], pos.x, pos.y);
     }
   }
-  void drawGloboAzul(float posPayasoX, float posPayasoY) {
-    moverGlobo(posPayasoX, posPayasoY, 0.001);
-    for (int i = 0; i < 5; i++) {
-      image(movimiento[2][1 + int(imagenGlobo)], posRA.x, posRA.y);
-    }
-  }
+
 
   void moverGlobo(float posPayasoX, float posPayasoY, float incremento) {
 
@@ -81,23 +79,23 @@ class Globos {
     }
   }
   boolean validarColisionGlobosRA(float posPayasoX, float posPayasoY, int val) {
-   // println("x",posRA.x,"y", posRA.y);
-    if ((posPayasoX >= posRA.x-70  && posPayasoX <= posRA.x +20) && (posPayasoY + 90 >= posRA.y  && posPayasoY + 90 <=  posRA.y +83) && val==1) {
-     // image(movimiento[0]pos.x[1 + int(imgenGlobo)], pos.x = -180, pos.y = -180);
-     //posRA.x = -100;
-     //posRA.y = -100;
+    // println("x",posRA.x,"y", posRA.y);
+    if ((posPayasoX >= posRA.x-60  && posPayasoX <= posRA.x +30) && (posPayasoY + 90 >= posRA.y  && posPayasoY + 90 <=  posRA.y +83) && val==1) {
+      // image(movimiento[0]pos.x[1 + int(imgenGlobo)], pos.x = -180, pos.y = -180);
+      posRA.x = -100;
+      posRA.y = -100;
       return true;
     }
 
 
     return false;
   }
-   boolean validarColisionGlobosM(float posPayasoX, float posPayasoY) {
-    println("x",pos.x,"y", pos.y);
-    if ((posPayasoX >= pos.x-60  && posPayasoX <= pos.x +20) && (posPayasoY >= pos.y - 90  && posPayasoY+10  <=  pos.y+60)) {
-     // image(movimiento[0]pos.x[1 + int(imgenGlobo)], pos.x = -180, pos.y = -180);
-     //pos.x -= 0.5;
-     //pos.y -= 0.5;
+  boolean validarColisionGlobosM(float posPayasoX, float posPayasoY) {
+    //  println("x", pos.x, "y", pos.y);
+    if ((posPayasoX >= pos.x-60  && posPayasoX <= pos.x +30) && (posPayasoY >= pos.y - 90  && posPayasoY+10  <=  pos.y+60)) {
+      // image(movimiento[0]pos.x[1 + int(imgenGlobo)], pos.x = -180, pos.y = -180);
+      //pos.x -= 0.5;
+      //pos.y -= 0.5;
       return true;
     }
 
@@ -122,7 +120,7 @@ class Globos {
 
 
   boolean limitar() {
-    if (pos.x >= 0 && pos.x <= 750 && pos.y < 540 ) {
+    if (pos.x >= 0 && pos.x <= 750 && pos.y <= 540 ) {
       return true;
     }
     return false;
